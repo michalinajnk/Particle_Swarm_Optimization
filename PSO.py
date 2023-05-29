@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 class PSO:
-    def __init__(self, lower_bound, upper_bound, swarm_size, no_features, no_iterations, fitness_func):
+    def __init__(self, lower_bound, upper_bound, swarm_size, no_features, no_iterations, fitness_func, inertia_weight=0.5, cognitive_factor=0.5, social_factor=0.5):
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
         self.swarm_size = swarm_size
@@ -18,6 +18,10 @@ class PSO:
         self.best_fitness_personal = None
         self.global_best_pos = None
         self.global_best_fitness = float('inf')
+
+        self.inertia_weight = inertia_weight
+        self.cognitive_factor = cognitive_factor
+        self.social_factor = social_factor
 
 
 
@@ -52,13 +56,12 @@ class PSO:
                     # Aktualizacja prędkości
                     r1 = np.random.uniform(0, 1)
                     r2 = np.random.uniform(0, 1)
-                    inertia_weight = 0.5
-                    cognitive_factor = 0.5
-                    social_factor = 0.5
-                    self.velocities[i, j] = (inertia_weight * self.velocities[i, j] +
-                                             cognitive_factor * r1 * (
+
+
+                    self.velocities[i, j] = (self.inertia_weight * self.velocities[i, j] +
+                                             self.cognitive_factor * r1 * (
                                                      self.best_pos_personal[i, j] - self.particles[i, j]) +
-                                             social_factor * r2 * (self.global_best_pos[j] - self.particles[i, j]))
+                                             self.social_factor * r2 * (self.global_best_pos[j] - self.particles[i, j]))
 
                     # Ograniczenie prędkości
                     self.velocities[i, j] = np.clip(self.velocities[i, j], self.lower_bound - self.upper_bound,
