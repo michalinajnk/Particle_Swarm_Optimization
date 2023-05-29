@@ -13,16 +13,6 @@ def sphere_function(x):
 
 import numpy as np
 
-def rosenbrock_function(x):
-    if isinstance(x, (int, float)):
-        x = np.array([x])  # Convert single value to numpy array
-    elif isinstance(x, list):
-        x = np.array(x)  # Convert list to numpy array
-
-    n = len(x)
-    fitness = np.sum(100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2)
-    return fitness
-
 
 
 if __name__ == '__main__':
@@ -34,7 +24,7 @@ if __name__ == '__main__':
     for it in max_iterations:
         for swarm_size in swarm_sizes:
             pso = PSO(lower_bound=-100, upper_bound=100, swarm_size=swarm_size, no_features=10, no_iterations=it,
-                      fitness_func=rosenbrock_function)
+                      fitness_func=sphere_function)
             pso.start()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
