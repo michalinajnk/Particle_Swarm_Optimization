@@ -31,14 +31,14 @@ class PSO:
     def start(self):
         self.initialize_particles()
 
-        for j in range(1, self.no_features):
+        for _ in range(self.no_iterations):
             # Aktualizacja najlepszej globalnej pozycji
             global_best_index = np.argmin(self.best_fitness_personal)
             if self.best_fitness_personal[global_best_index] < self.global_best_fitness:
                 self.global_best_pos = self.best_pos_personal[global_best_index].copy()
                 self.global_best_fitness = self.best_fitness_personal[global_best_index]
 
-            for _ in range(self.no_iterations):
+            for j in range(self.no_features):  # Iteracja po wszystkich wymiarach
                 for i in range(self.swarm_size):
                     # Aktualizacja pozycji
                     self.particles[i, j] = np.random.uniform(self.lower_bound, self.upper_bound)
@@ -57,7 +57,7 @@ class PSO:
                     social_factor = 0.5
                     self.velocities[i, j] = (inertia_weight * self.velocities[i, j] +
                                              cognitive_factor * r1 * (
-                                                         self.best_pos_personal[i, j] - self.particles[i, j]) +
+                                                     self.best_pos_personal[i, j] - self.particles[i, j]) +
                                              social_factor * r2 * (self.global_best_pos[j] - self.particles[i, j]))
 
                     # Ograniczenie prędkości
@@ -69,4 +69,5 @@ class PSO:
 
         # Wypisanie rozwiązania
         print("Rozwiązanie g:", self.global_best_pos)
+
 
